@@ -1,0 +1,37 @@
+version: '3'
+services:
+  wazuh-manager:
+    image: wazuh/wazuh:latest
+    container_name: wazuh-manager
+    ports:
+      - "1514:1514"
+      - "55000:55000"
+    volumes:
+      - wazuh-data:/var/ossec/data
+    networks:
+      - wazuh-net
+
+  wazuh-agent:
+    image: wazuh/wazuh-agent:latest
+    container_name: wazuh-agent
+    depends_on:
+      - wazuh-manager
+    networks:
+      - wazuh-net
+    environment:
+      - WAZUH_MANAGER_IP=wazuh-manager
+
+  dvwa:
+    image: vulnerables/web-dvwa
+    container_name: dvwa
+    ports:
+      - "80:80"
+    networks:
+      - wazuh-net
+
+volumes:
+  wazuh-data:
+
+networks:
+  wazuh-net:
+    driver: bridge
