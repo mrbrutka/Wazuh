@@ -1,4 +1,4 @@
-# INBANK
+
 
 Prerequisite for Wazuh to be deployed on Docker. 
 
